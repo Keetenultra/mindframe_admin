@@ -108,22 +108,22 @@ class _AdminDashboardState extends State<AdminDashboard>
           // Main content area
           Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
               child: TabBarView(
                 controller: tabController,
                 children: [
-                  DashBoardSection(),
+                  const DashBoardSection(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
                         height: 16,
                       ),
-                      Text(
+                      const Text(
                         'User Management',
                         style: TextStyle(
                             fontSize: 24,
-                            color: const Color.fromARGB(255, 0, 0, 0),
+                            color: Color.fromARGB(255, 0, 0, 0),
                             fontWeight: FontWeight.bold),
                       ),
                       Padding(
@@ -150,7 +150,7 @@ class _AdminDashboardState extends State<AdminDashboard>
                                     subtitle: '+12% from last month'),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 40,
                             ),
                             Container(
@@ -179,9 +179,9 @@ class _AdminDashboardState extends State<AdminDashboard>
                                             height: 50,
                                             color: Colors.white,
                                             child: DataTable(
-                                              dataTextStyle: TextStyle(
+                                              dataTextStyle: const TextStyle(
                                                   fontWeight: FontWeight.w900),
-                                              columns: [
+                                              columns: const [
                                                 DataColumn(
                                                     label: Text('USER',
                                                         style: TextStyle(
@@ -198,19 +198,21 @@ class _AdminDashboardState extends State<AdminDashboard>
                                               ],
                                               rows: [
                                                 DataRow(cells: [
-                                                  DataCell(Text('John Doe')),
-                                                  DataCell(Text('Active')),
-                                                  DataCell(
+                                                  const DataCell(
+                                                      Text('John Doe')),
+                                                  const DataCell(
+                                                      Text('Active')),
+                                                  const DataCell(
                                                       Text('2 minutes ago')),
                                                   DataCell(Row(
                                                     children: [
                                                       IconButton(
-                                                        icon:
-                                                            Icon(Icons.person),
+                                                        icon: const Icon(
+                                                            Icons.person),
                                                         onPressed: () {},
                                                       ),
                                                       IconButton(
-                                                        icon: Icon(
+                                                        icon: const Icon(
                                                             Icons.more_vert),
                                                         onPressed: () {},
                                                       ),
@@ -218,19 +220,21 @@ class _AdminDashboardState extends State<AdminDashboard>
                                                   )),
                                                 ]),
                                                 DataRow(cells: [
-                                                  DataCell(Text('Jane Smith')),
-                                                  DataCell(Text('Active')),
-                                                  DataCell(
+                                                  const DataCell(
+                                                      Text('Jane Smith')),
+                                                  const DataCell(
+                                                      Text('Active')),
+                                                  const DataCell(
                                                       Text('5 minutes ago')),
                                                   DataCell(Row(
                                                     children: [
                                                       IconButton(
-                                                        icon:
-                                                            Icon(Icons.person),
+                                                        icon: const Icon(
+                                                            Icons.person),
                                                         onPressed: () {},
                                                       ),
                                                       IconButton(
-                                                        icon: Icon(
+                                                        icon: const Icon(
                                                             Icons.more_vert),
                                                         onPressed: () {},
                                                       ),
@@ -238,19 +242,21 @@ class _AdminDashboardState extends State<AdminDashboard>
                                                   )),
                                                 ]),
                                                 DataRow(cells: [
-                                                  DataCell(
+                                                  const DataCell(
                                                       Text('James Johnson')),
-                                                  DataCell(Text('Inactive')),
-                                                  DataCell(Text('1 hour ago')),
+                                                  const DataCell(
+                                                      Text('Inactive')),
+                                                  const DataCell(
+                                                      Text('1 hour ago')),
                                                   DataCell(Row(
                                                     children: [
                                                       IconButton(
-                                                        icon:
-                                                            Icon(Icons.person),
+                                                        icon: const Icon(
+                                                            Icons.person),
                                                         onPressed: () {},
                                                       ),
                                                       IconButton(
-                                                        icon: Icon(
+                                                        icon: const Icon(
                                                             Icons.more_vert),
                                                         onPressed: () {},
                                                       ),
@@ -272,8 +278,8 @@ class _AdminDashboardState extends State<AdminDashboard>
                       ),
                     ],
                   ),
-                  ContentMon(),
-                  AnalyticsDashboard()
+                  const ContentMon(),
+                  const AnalyticsDashboard()
                 ],
               ),
             ),
