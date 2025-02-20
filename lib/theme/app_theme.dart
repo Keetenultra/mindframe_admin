@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Color backgroundColor = Color(0xFFB5C2C9);
+const Color backgroundColor = Color(0xFFFFFFFF);
 const Color titleColor = Color(0xFF353535);
 const Color textColor = Color(0xFF353535);
 const Color mutedIconColor = Color(0xFFA1A1A1);
@@ -99,8 +99,8 @@ ThemeData appTheme = ThemeData(
     prefixIconColor: iconColor,
     floatingLabelBehavior: FloatingLabelBehavior.auto,
     contentPadding: const EdgeInsets.symmetric(
-      vertical: 5,
-      horizontal: 8,
+      horizontal: 10,
+      vertical: 15,
     ),
     fillColor: cardBackgroundColor,
     filled: true,

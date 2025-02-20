@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/features/login/login_screen.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../theme/app_theme.dart';
-import 'custom_alert_dialog.dart';
 
 class CustomDrawer extends StatefulWidget {
   final TabController tabController;
@@ -24,163 +19,99 @@ class _CustomDrawerState extends State<CustomDrawer>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 230,
-      child: Material(
-        color: secondaryColor,
-        borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    DrawerButton(
-                      label: 'Dashboard',
-                      iconData: Icons.dashboard_rounded,
-                      onPressed: () {
-                        changeIndex(0);
-                      },
-                      isSelected: widget.tabController.index == 0,
-                    ),
-                    const SizedBox(height: 10),
-                    DrawerButton(
-                      label: 'Delivery Partner',
-                      iconData: Icons.moped_sharp,
-                      onPressed: () {
-                        changeIndex(1);
-                      },
-                      isSelected: widget.tabController.index == 1,
-                    ),
-                    const SizedBox(height: 10),
-                    DrawerButton(
-                      label: 'Order Details',
-                      iconData: Icons.list,
-                      onPressed: () {
-                        changeIndex(2);
-                      },
-                      isSelected: widget.tabController.index == 2,
-                    ),
-                    const SizedBox(height: 10),
-                    DrawerButton(
-                      label: 'Payment Details',
-                      iconData: Icons.attach_money,
-                      onPressed: () {
-                        changeIndex(3);
-                      },
-                      isSelected: widget.tabController.index == 3,
-                    ),
-                    const SizedBox(height: 10),
-                    DrawerButton(
-                      label: 'Food Category',
-                      iconData: Icons.category,
-                      onPressed: () {
-                        changeIndex(4);
-                      },
-                      isSelected: widget.tabController.index == 4,
-                    ),
-                    const SizedBox(height: 10),
-                    DrawerButton(
-                      label: 'Food Item',
-                      iconData: Icons.food_bank,
-                      onPressed: () {
-                        changeIndex(5);
-                      },
-                      isSelected: widget.tabController.index == 5,
-                    ),
-                    const SizedBox(height: 10),
-                    DrawerButton(
-                      label: 'Log out',
-                      iconData: Icons.logout_rounded,
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => CustomAlertDialog(
-                            title: "LOG OUT",
-                            content: const Text(
-                              "Are you sure you want to log out? Clicking 'Logout' will end your current session and require you to sign in again to access your account.",
-                            ),
-                            primaryButton: "LOG OUT",
-                            onPrimaryPressed: () {
-                              Supabase.instance.client.auth.signOut();
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginScreen(),
-                                  ),
-                                  (route) => false);
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
+    return Container(
+      width: 250,
+      color: Colors.deepPurple,
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        children: [
+          const Text(
+            'Mindframe',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
+          const SizedBox(height: 10),
+          const Text(
+            'Admin Portal',
+            style: TextStyle(color: Colors.white),
+          ),
+          const SizedBox(height: 32),
+          Buildnavitem(
+            isActive: widget.tabController.index == 0,
+            icon: Icons.dashboard,
+            title: 'Dashboard',
+            ontap: () {
+              widget.tabController.animateTo(0);
+            },
+          ),
+          Buildnavitem(
+            isActive: widget.tabController.index == 1,
+            icon: Icons.people,
+            title: 'User Management',
+            ontap: () {
+              widget.tabController.animateTo(1);
+            },
+          ),
+          Buildnavitem(
+            isActive: widget.tabController.index == 2,
+            icon: Icons.lightbulb_outline,
+            title: 'Content Moderation',
+            ontap: () {
+              widget.tabController.animateTo(2);
+            },
+          ),
+          Buildnavitem(
+            isActive: widget.tabController.index == 3,
+            icon: Icons.analytics,
+            title: 'Analytics',
+            ontap: () {
+              widget.tabController.animateTo(3);
+            },
+          ),
+          Buildnavitem(
+            isActive: widget.tabController.index == 4,
+            icon: Icons.category,
+            title: 'Categories',
+            ontap: () {
+              widget.tabController.animateTo(4);
+            },
+          ),
+        ],
       ),
     );
   }
 }
 
-class DrawerButton extends StatelessWidget {
-  final String label;
-  final IconData iconData;
-  final Function() onPressed;
-  final bool isSelected, isDrawerOpen;
-  const DrawerButton({
+class Buildnavitem extends StatelessWidget {
+  final Function() ontap;
+  final IconData icon;
+  final String title;
+  final bool isActive;
+
+  const Buildnavitem({
     super.key,
-    required this.label,
-    required this.iconData,
-    required this.onPressed,
-    this.isSelected = false,
-    this.isDrawerOpen = true,
+    required this.icon,
+    required this.title,
+    required this.ontap,
+    required this.isActive,
   });
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: isSelected ? primaryColor : Colors.transparent,
-      borderRadius: BorderRadius.circular(8),
-      child: InkWell(
-        onTap: isSelected ? null : onPressed,
-        hoverColor: Colors.grey[200],
-        focusColor: Colors.grey[200],
-        highlightColor: Colors.grey[200],
-        splashColor: Colors.grey[300],
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 10,
-          ),
-          child: Row(
-            mainAxisAlignment: isDrawerOpen
-                ? MainAxisAlignment.start
-                : MainAxisAlignment.center,
-            children: [
-              Icon(
-                iconData,
-                color: isSelected ? Colors.white : primaryColor,
-              ),
-              if (isDrawerOpen) const SizedBox(width: 10),
-              if (isDrawerOpen)
-                Text(
-                  label.toUpperCase(),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: isSelected ? Colors.white : primaryColor,
-                      ),
-                ),
-            ],
-          ),
+      color: isActive
+          ? const Color.fromARGB(255, 149, 63, 247)
+          : Colors.deepPurple,
+      child: ListTile(
+        leading: Icon(icon, color: Colors.white),
+        title: Text(
+          title,
+          style: const TextStyle(color: Colors.white),
         ),
+        onTap: ontap,
       ),
     );
   }

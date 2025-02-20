@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final bool _isObscure = true;
+  bool _isObscure = true;
 
   @override
   void initState() {
@@ -88,56 +88,76 @@ class _LoginScreenState extends State<LoginScreen> {
                   flex: 1,
                   child: Form(
                     key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        const Text(
-                          'MINDFRAME',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 50,
-                              color: secondaryColor),
+                    child: Center(
+                      child: SizedBox(
+                        width: 400,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            const Text(
+                              'MINDFRAME',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 50,
+                                  color: secondaryColor),
+                            ),
+                            const Text(
+                              'Enter your email and password',
+                              style: TextStyle(
+                                  fontSize: 18, color: secondaryColor),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            CustomTextFormField(
+                              labelText: 'Email',
+                              controller: _emailController,
+                              validator: emailValidator,
+                              isLoading: state is LoginLoadingState,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
+                                enabled: state is! LoginLoadingState,
+                                controller: _passwordController,
+                                obscureText: _isObscure,
+                                validator: notEmptyValidator,
+                                decoration: InputDecoration(
+                                  suffixIcon: IconButton(
+                                      onPressed: () {
+                                        _isObscure = !_isObscure;
+                                        setState(() {});
+                                      },
+                                      icon: Icon(_isObscure
+                                          ? Icons.visibility_off
+                                          : Icons.visibility)),
+                                  border: const OutlineInputBorder(),
+                                  hintText: 'Password',
+                                )),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              width: 400,
+                              child: CustomButton(
+                                isLoading: state is LoginLoadingState,
+                                color: Colors.white,
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    BlocProvider.of<LoginBlocBloc>(context).add(
+                                      LoginEvent(
+                                        email: _emailController.text.trim(),
+                                        password:
+                                            _passwordController.text.trim(),
+                                      ),
+                                    );
+                                  }
+                                },
+                                label: 'Signin',
+                              ),
+                            ),
+                          ],
                         ),
-                        const Text(
-                          'Enter your email and password',
-                          style: TextStyle(fontSize: 18, color: secondaryColor),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CustomTextFormField(
-                            labelText: 'Email',
-                            controller: _emailController,
-                            validator: emailValidator,
-                            isLoading: false),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        CustomTextFormField(
-                            suffixIconData: Icons.visibility,
-                            labelText: 'Password',
-                            controller: _passwordController,
-                            validator: notEmptyValidator,
-                            isLoading: false),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: 400,
-                          child: CustomButton(
-                            color: Colors.white,
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                BlocProvider.of<LoginBlocBloc>(context).add(
-                                  LoginEvent(
-                                    email: _emailController.text.trim(),
-                                    password: _passwordController.text.trim(),
-                                  ),
-                                );
-                              }
-                            },
-                            label: 'Signin',
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 )
