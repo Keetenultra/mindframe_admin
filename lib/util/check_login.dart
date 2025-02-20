@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/login/login_screen.dart';
+import 'package:flutter_application_1/features/login/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void checkLogin(BuildContext context) {

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/custom%20widgets/custom_alert_diolog.dart';
-import 'package:flutter_application_1/home_screen.dart';
-import 'package:flutter_application_1/models/login/loginbloc/login_bloc_bloc.dart';
+import 'package:flutter_application_1/common_widget/custom_alert_dialog.dart';
+import 'package:flutter_application_1/common_widget/custom_button.dart';
+import 'package:flutter_application_1/common_widget/custom_text_formfield.dart';
+import 'package:flutter_application_1/features/home_screen.dart';
+import 'package:flutter_application_1/theme/app_theme.dart';
+import 'package:flutter_application_1/util/value_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'loginbloc/login_bloc_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _isObscure = true;
+  final bool _isObscure = true;
 
   @override
   void initState() {
@@ -29,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (currentUser != null && currentUser.appMetadata['role'] == 'admin') {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
+            builder: (context) => const AdminDashboard(),
           ),
         );
       }
@@ -46,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
             if (state is LoginSuccessState) {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
+                MaterialPageRoute(builder: (context) => const AdminDashboard()),
                 (route) => false,
               );
             } else if (state is LoginFailureState) {
@@ -65,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 100),
                     child: ClipRRect(
@@ -73,15 +78,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           topRight: Radius.circular(50),
                           bottomRight: Radius.circular(50)),
                       child: Image(
-                        image: NetworkImage(
-                            'https://images.unsplash.com/photo-1717501218636-a390f9ac5957?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                        image: AssetImage('assets/images/mflogo.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -90,61 +94,36 @@ class _LoginScreenState extends State<LoginScreen> {
                         const Text(
                           'MINDFRAME',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 50),
-                        ),
-                        const SizedBox(
-                          height: 10,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 50,
+                              color: secondaryColor),
                         ),
                         const Text(
                           'Enter your email and password',
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 18, color: secondaryColor),
                         ),
                         const SizedBox(
                           height: 20,
                         ),
-                        SizedBox(
-                          width: 200,
-                          child: TextField(
+                        CustomTextFormField(
+                            labelText: 'Email',
                             controller: _emailController,
-                            decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.email),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              hintText: 'Email',
-                              labelText: "Email",
-                            ),
-                          ),
-                        ),
+                            validator: emailValidator,
+                            isLoading: false),
                         const SizedBox(
                           height: 10,
                         ),
-                        SizedBox(
-                          width: 200,
-                          child: TextField(
+                        CustomTextFormField(
+                            suffixIconData: Icons.visibility,
+                            labelText: 'Password',
                             controller: _passwordController,
-                            obscureText: _isObscure,
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                  onPressed: () {
-                                    _isObscure != _isObscure;
-                                    setState(() {});
-                                  },
-                                  icon: Icon(_isObscure
-                                      ? Icons.visibility
-                                      : Icons.visibility_off)),
-                              prefixIcon: const Icon(Icons.lock),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              hintText: "password",
-                              labelText: "password",
-                            ),
-                          ),
-                        ),
+                            validator: notEmptyValidator,
+                            isLoading: false),
                         const SizedBox(height: 20),
                         SizedBox(
-                          width: 200,
-                          height: 40,
-                          child: ElevatedButton(
+                          width: 400,
+                          child: CustomButton(
+                            color: Colors.white,
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 BlocProvider.of<LoginBlocBloc>(context).add(
@@ -155,21 +134,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 );
                               }
                             },
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                backgroundColor: Colors.blue,
-                                foregroundColor: Colors.white,
-                                elevation: 20,
-                                fixedSize: const Size(120, 34)),
-                            child: const Text(
-                              'REGISTER',
-                            ),
+                            label: 'Signin',
                           ),
-                        ),
-                        const SizedBox(
-                          height: 15,
                         ),
                       ],
                     ),

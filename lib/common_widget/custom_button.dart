@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../theme/app_theme.dart';
+
 class CustomButton extends StatefulWidget {
   final String? label;
   final IconData? iconData;
@@ -16,7 +18,7 @@ class CustomButton extends StatefulWidget {
     this.inverse = false,
     this.isLoading = false,
     required this.onPressed,
-    this.backGroundColor = Colors.blueAccent,
+    this.backGroundColor = primaryColor,
   });
 
   @override
@@ -24,14 +26,14 @@ class CustomButton extends StatefulWidget {
 }
 
 class _CustomButtonState extends State<CustomButton> {
-  bool _hovering = false;
+  final bool _hovering = false;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 100),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).colorScheme.shadow,
@@ -44,7 +46,7 @@ class _CustomButtonState extends State<CustomButton> {
             blurRadius: !_hovering ? 0 : 2,
           ),
         ],
-        color: widget.inverse ? widget.backGroundColor : Colors.white,
+        color: widget.inverse ? widget.backGroundColor : secondaryColor,
         border: widget.inverse
             ? null
             : Border.all(
@@ -56,10 +58,10 @@ class _CustomButtonState extends State<CustomButton> {
         borderRadius: BorderRadius.circular(8),
         onTap: widget.onPressed,
         autofocus: widget.inverse,
-        onHover: (value) {
-          _hovering = value;
-          setState(() {});
-        },
+        // onHover: (value) {
+        //   _hovering = value;
+        //   setState(() {});
+        // },
         child: Padding(
           padding: EdgeInsets.only(
             left: widget.label != null ? 15 : 10,
@@ -78,7 +80,7 @@ class _CustomButtonState extends State<CustomButton> {
                   textAlign: TextAlign.end,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: widget.inverse ? Colors.white : widget.color,
+                        color: widget.inverse ? secondaryColor : widget.color,
                       ),
                 ),
               SizedBox(

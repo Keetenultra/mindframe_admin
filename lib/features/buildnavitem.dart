@@ -16,7 +16,9 @@ class Buildnavitem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: isActive ? Color.fromARGB(255, 149, 63, 247) : Colors.deepPurple,
+      color: isActive
+          ? const Color.fromARGB(255, 149, 63, 247)
+          : Colors.deepPurple,
       child: ListTile(
         leading: Icon(icon, color: Colors.white),
         title: Text(

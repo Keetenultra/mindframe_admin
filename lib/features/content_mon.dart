@@ -1,20 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ContentMon extends StatelessWidget {
-  const ContentMon({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Content Moderation',
-      home: const ContentModerationScreen(),
-    );
-  }
-}
-
 class ContentModerationScreen extends StatelessWidget {
-  const ContentModerationScreen({Key? key}) : super(key: key);
+  const ContentModerationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,28 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/analytics_dashboard.dart';
-import 'package:flutter_application_1/buildnavitem.dart';
-import 'package:flutter_application_1/buildoverview.dart';
-import 'package:flutter_application_1/content_mon.dart';
-
-void main() {
-  runApp(const HomeScreen());
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Admin Dashboard',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-      ),
-      home: const AdminDashboard(),
-    );
-  }
-}
+import 'package:flutter_application_1/features/values/analytics_dashboard.dart';
+import 'package:flutter_application_1/features/buildnavitem.dart';
+import 'package:flutter_application_1/features/buildoverview.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -278,7 +257,6 @@ class _AdminDashboardState extends State<AdminDashboard>
                       ),
                     ],
                   ),
-                  const ContentMon(),
                   const AnalyticsDashboard()
                 ],
               ),
@@ -291,45 +269,6 @@ class _AdminDashboardState extends State<AdminDashboard>
 
   Widget _buildStatsCard(String title, String value, IconData icon,
       {String subtitle = ''}) {
-    return Expanded(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    value,
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  if (subtitle.isNotEmpty)
-                    Text(
-                      subtitle,
-                      style: const TextStyle(color: Colors.green),
-                    ),
-                ],
-              ),
-              Icon(icon, size: 48, color: Colors.deepPurple),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOverviewCard(
-      String title, String value, String subtitle, IconData icon) {
     return Expanded(
       child: Card(
         child: Padding(
@@ -391,7 +330,7 @@ class DashBoardSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Buildoverview(
@@ -430,16 +369,16 @@ class DashBoardSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Card(
+              const Card(
                 child: ListTile(
                   leading: CircleAvatar(
                     child: Text('J'),
                   ),
-                  title: const Text('John Doe'),
-                  subtitle: const Text('john@example.com'),
+                  title: Text('John Doe'),
+                  subtitle: Text('john@example.com'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
                         'active',
                         style: TextStyle(color: Colors.green),
@@ -465,10 +404,10 @@ class DashBoardSection extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      Expanded(
+                      const Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
                               'Sustainable Urban Farming',
                               style: TextStyle(

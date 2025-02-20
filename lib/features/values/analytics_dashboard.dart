@@ -1,19 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AnalyticsApp extends StatelessWidget {
-  const AnalyticsApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const AnalyticsDashboard(),
-    );
-  }
-}
-
 class AnalyticsDashboard extends StatelessWidget {
-  const AnalyticsDashboard({Key? key}) : super(key: key);
+  const AnalyticsDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
