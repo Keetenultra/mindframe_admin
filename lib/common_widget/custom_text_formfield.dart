@@ -50,10 +50,6 @@ class CustomTextFormField extends StatelessWidget {
             textInputAction: TextInputAction.next,
             keyboardType: keyboardType,
             decoration: InputDecoration(
-              filled: true,
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none),
               contentPadding: contentPadding ??
                   ((prefixIconData != null || suffixIconData != null)
                       ? null

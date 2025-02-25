@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/common_widget/custom_button.dart';
 
 class CustomCategoryCard extends StatelessWidget {
   final String coverImageUrl;
@@ -16,70 +15,101 @@ class CustomCategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
-      child: Material(
-        shadowColor: Colors.black,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+    return Material(
+      color: Colors.black,
+      shadowColor: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      elevation: 4,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// Left Side: Image
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                coverImageUrl,
+                height: 80,
+                width: 200,
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            const SizedBox(width: 12),
+            Text(
+              name,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: Colors.white,
+                  ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                FeatureCard(
+                  icon: Icons.edit,
+                  text: "Edit",
+                  ontap: onEdit,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                FeatureCard(
+                  icon: Icons.delete,
+                  text: "Delete",
+                  ontap: onDelete,
+                ),
+              ],
+            ),
+          ],
         ),
-        elevation: 4,
+      ),
+    );
+  }
+}
+
+class FeatureCard extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final Function() ontap;
+  const FeatureCard(
+      {super.key, required this.icon, required this.text, required this.ontap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(
+          color: Colors.grey.shade300,
+        ),
+      ),
+      child: InkWell(
+        onTap: ontap,
+        borderRadius: BorderRadius.circular(10),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// Left Side: Image
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  coverImageUrl,
-                  height: 80,
-                  width: 80,
-                  fit: BoxFit.cover,
-                ),
+              Icon(
+                icon,
+                size: 20,
+                color: Colors.white70,
               ),
-
-              const SizedBox(width: 12),
-
-              /// Right Side: Text & Buttons
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// Name
-                    Text(
-                      name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+              SizedBox(width: 4),
+              Text(
+                text,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w500,
                     ),
-
-                    const SizedBox(height: 8),
-
-                    /// Buttons (Edit & Delete)
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        CustomButton(
-                          onPressed: onEdit,
-                          label: 'Edit',
-                          color: Colors.orange,
-                        ),
-                        const SizedBox(width: 10),
-                        CustomButton(
-                          onPressed: onDelete,
-                          color: Colors.red,
-                          label: 'Delete',
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
               ),
             ],
           ),

@@ -69,29 +69,20 @@ class _LoginScreenState extends State<LoginScreen> {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 100),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(50),
-                          bottomRight: Radius.circular(50)),
-                      child: Image(
-                        image: AssetImage('assets/images/mflogo.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                Expanded(
+                  child: Image.asset(
+                    'assets/images/mflogo.jpg',
+                    fit: BoxFit.cover,
                   ),
                 ),
                 Expanded(
-                  flex: 1,
                   child: Form(
                     key: _formKey,
                     child: Center(
                       child: SizedBox(
-                        width: 400,
+                        width: 350,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             const Text(
@@ -109,6 +100,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(
                               height: 20,
                             ),
+                            Text('Email',
+                                style: Theme.of(context).textTheme.bodyLarge),
+                            const SizedBox(
+                              height: 5,
+                            ),
                             CustomTextFormField(
                               labelText: 'Email',
                               controller: _emailController,
@@ -117,6 +113,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             const SizedBox(
                               height: 10,
+                            ),
+                            Text('Password',
+                                style: Theme.of(context).textTheme.bodyLarge),
+                            const SizedBox(
+                              height: 5,
                             ),
                             TextFormField(
                                 enabled: state is! LoginLoadingState,
@@ -136,24 +137,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                   hintText: 'Password',
                                 )),
                             const SizedBox(height: 20),
-                            SizedBox(
-                              width: 400,
-                              child: CustomButton(
-                                isLoading: state is LoginLoadingState,
-                                color: Colors.white,
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    BlocProvider.of<LoginBlocBloc>(context).add(
-                                      LoginEvent(
-                                        email: _emailController.text.trim(),
-                                        password:
-                                            _passwordController.text.trim(),
-                                      ),
-                                    );
-                                  }
-                                },
-                                label: 'Signin',
-                              ),
+                            CustomButton(
+                              isLoading: state is LoginLoadingState,
+                              inverse: true,
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  BlocProvider.of<LoginBlocBloc>(context).add(
+                                    LoginEvent(
+                                      email: _emailController.text.trim(),
+                                      password: _passwordController.text.trim(),
+                                    ),
+                                  );
+                                }
+                              },
+                              label: 'Signin',
                             ),
                           ],
                         ),

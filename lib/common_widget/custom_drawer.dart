@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../features/login/login_screen.dart';
+import 'custom_alert_dialog.dart';
 
 class CustomDrawer extends StatefulWidget {
   final TabController tabController;
@@ -77,6 +81,32 @@ class _CustomDrawerState extends State<CustomDrawer>
             title: 'Categories',
             ontap: () {
               widget.tabController.animateTo(4);
+            },
+          ),
+          Buildnavitem(
+            isActive: false,
+            icon: Icons.logout,
+            title: 'Log Out',
+            ontap: () {
+              showDialog(
+                context: context,
+                builder: (context) => CustomAlertDialog(
+                  title: "LOG OUT",
+                  content: const Text(
+                    "Are you sure you want to log out? Clicking 'Logout' will end your current session and require you to Login again to access your account.",
+                  ),
+                  primaryButton: "LOG OUT",
+                  onPrimaryPressed: () {
+                    Supabase.instance.client.auth.signOut();
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                        (route) => false);
+                  },
+                ),
+              );
             },
           ),
         ],

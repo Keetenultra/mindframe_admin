@@ -26,14 +26,14 @@ class CustomButton extends StatefulWidget {
 }
 
 class _CustomButtonState extends State<CustomButton> {
-  final bool _hovering = false;
+  bool _hovering = false;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 100),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).colorScheme.shadow,
@@ -46,11 +46,11 @@ class _CustomButtonState extends State<CustomButton> {
             blurRadius: !_hovering ? 0 : 2,
           ),
         ],
-        color: widget.inverse ? widget.backGroundColor : secondaryColor,
+        color: widget.inverse ? widget.backGroundColor : Colors.white,
         border: widget.inverse
             ? null
             : Border.all(
-                color: Theme.of(context).colorScheme.outline,
+                color: Theme.of(context).colorScheme.primary,
                 width: 1,
               ),
       ),
@@ -58,16 +58,16 @@ class _CustomButtonState extends State<CustomButton> {
         borderRadius: BorderRadius.circular(8),
         onTap: widget.onPressed,
         autofocus: widget.inverse,
-        // onHover: (value) {
-        //   _hovering = value;
-        //   setState(() {});
-        // },
+        onHover: (value) {
+          _hovering = value;
+          setState(() {});
+        },
         child: Padding(
           padding: EdgeInsets.only(
             left: widget.label != null ? 15 : 10,
             right: widget.iconData != null ? 10 : 15,
-            top: widget.iconData != null ? 7 : 7,
-            bottom: widget.iconData != null ? 7 : 7,
+            top: widget.iconData != null ? 7 : 14,
+            bottom: widget.iconData != null ? 7 : 14,
           ),
           child: Row(
             mainAxisAlignment: widget.label != null && widget.iconData != null
@@ -80,7 +80,7 @@ class _CustomButtonState extends State<CustomButton> {
                   textAlign: TextAlign.end,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: widget.inverse ? secondaryColor : widget.color,
+                        color: widget.inverse ? Colors.white : widget.color,
                       ),
                 ),
               SizedBox(
