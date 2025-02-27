@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/common_widget/custom_drawer.dart';
 import 'package:flutter_application_1/features/category/category_screen.dart';
+import 'package:flutter_application_1/features/idea/idea_managements.dart';
 
 import 'dashboard/dashboard.dart';
 import 'users/user_management.dart';
@@ -34,14 +35,15 @@ class _AdminDashboardState extends State<AdminDashboard>
           Expanded(
             child: TabBarView(
               controller: tabController,
-              children: [
-                const DashBoardSection(),
-                const UserManagementSection(),
-                Container(),
-                Container(
-                  color: Colors.red,
+              children: const [
+                DashBoardSection(),
+                UserManagementSection(),
+                IdeaManagements(),
+                IdeaManagements(
+                  title: 'Pending Idea',
+                  status: 'Pending',
                 ),
-                const CategoryScreen(),
+                CategoryScreen(),
               ],
             ),
           )

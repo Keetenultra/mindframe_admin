@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/features/idea/idea_managements.dart';
 
+import '../../common_widget/custom_search.dart';
 import '../buildoverview.dart';
 
 class DashBoardSection extends StatelessWidget {
@@ -24,29 +26,25 @@ class DashBoardSection extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Buildoverview(
                 title: 'Active Users',
-                subtitle: '+12% from last month',
                 icon: Icons.person,
                 value: '1234',
               ),
               Buildoverview(
                 title: 'Pending Ideas',
-                subtitle: '+',
                 icon: Icons.lightbulb_outline,
                 value: '56',
               ),
               Buildoverview(
                 title: 'Total Ideas',
-                subtitle: '+8% from last month',
                 icon: Icons.trending_up,
                 value: '789',
               ),
               Buildoverview(
                 title: 'Open Disputes',
-                subtitle: '',
                 icon: Icons.warning,
                 value: '12',
               ),
@@ -54,79 +52,36 @@ class DashBoardSection extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           // Recent Users section
-          const Text(
-            'Recent Users',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Card(
-            child: ListTile(
-              leading: CircleAvatar(
-                child: Text('J'),
+
+          Row(
+            children: [
+              Expanded(
+                child: const Text(
+                  'Pending Idea',
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-              title: Text('John Doe'),
-              subtitle: Text('john@example.com'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'active',
-                    style: TextStyle(color: Colors.green),
-                  ),
-                  SizedBox(width: 8),
-                  Text('2 minutes ago'),
-                ],
-              ),
-            ),
+              SizedBox(
+                width: 300,
+                child: CustomSearch(onSearch: (search) {}),
+              )
+            ],
           ),
-          const SizedBox(height: 24),
-          // Pending Ideas section
-          const Text(
-            'Pending Ideas',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Sustainable Urban Farming',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'A system for implementing vertical farming in urban areas...',
-                        ),
-                        SizedBox(height: 4),
-                        Text('Submitted by Jane Smith'),
-                      ],
-                    ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                children: List.generate(
+                  10,
+                  (index) => CustomIdeaCard(
+                    status: "Pending",
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.thumb_up, color: Colors.green),
-                  ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.thumb_down, color: Colors.red),
-                  ),
-                ],
+                ),
               ),
             ),
           ),

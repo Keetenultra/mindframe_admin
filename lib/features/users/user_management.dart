@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/common_widget/custom_search.dart';
 
 class UserManagementSection extends StatelessWidget {
   const UserManagementSection({
@@ -7,185 +8,78 @@ class UserManagementSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(
-          height: 16,
-        ),
-        const Text(
-          'User Management',
-          style: TextStyle(
-              fontSize: 24,
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontWeight: FontWeight.bold),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(1.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              Text(
-                'Manage your platform users and their access',
-                style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+              Expanded(
+                child: const Text(
+                  'User Management',
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildStatsCard('Total Users', '3', Icons.person,
-                      subtitle: ''),
-                  _buildStatsCard('Active Users', '2', Icons.person_outline,
-                      subtitle: '+12% from last month'),
-                ],
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 30,
-                      ),
-                    ],
-                    color: Colors.grey.withOpacity(0.1),
-                    borderRadius: BorderRadiusDirectional.circular(10)),
-                width: 1500,
-                height: 400,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 20),
-                            child: Container(
-                              height: 50,
-                              color: Colors.white,
-                              child: DataTable(
-                                dataTextStyle: const TextStyle(
-                                    fontWeight: FontWeight.w900),
-                                columns: const [
-                                  DataColumn(
-                                      label: Text('USER',
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold))),
-                                  DataColumn(label: Text('STATUS')),
-                                  DataColumn(label: Text('LAST ACTIVE')),
-                                  DataColumn(label: Text('ACTIONS')),
-                                ],
-                                rows: [
-                                  DataRow(cells: [
-                                    const DataCell(Text('John Doe')),
-                                    const DataCell(Text('Active')),
-                                    const DataCell(Text('2 minutes ago')),
-                                    DataCell(Row(
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.person),
-                                          onPressed: () {},
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.more_vert),
-                                          onPressed: () {},
-                                        ),
-                                      ],
-                                    )),
-                                  ]),
-                                  DataRow(cells: [
-                                    const DataCell(Text('Jane Smith')),
-                                    const DataCell(Text('Active')),
-                                    const DataCell(Text('5 minutes ago')),
-                                    DataCell(Row(
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.person),
-                                          onPressed: () {},
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.more_vert),
-                                          onPressed: () {},
-                                        ),
-                                      ],
-                                    )),
-                                  ]),
-                                  DataRow(cells: [
-                                    const DataCell(Text('James Johnson')),
-                                    const DataCell(Text('Inactive')),
-                                    const DataCell(Text('1 hour ago')),
-                                    DataCell(Row(
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.person),
-                                          onPressed: () {},
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.more_vert),
-                                          onPressed: () {},
-                                        ),
-                                      ],
-                                    )),
-                                  ]),
-                                ],
-                              ),
-                            ),
-                          ),
+              SizedBox(
+                width: 300,
+                child: CustomSearch(onSearch: (search) {}),
+              )
+            ],
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                children: List.generate(
+                  10,
+                  (index) => Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
                         ),
                       ],
                     ),
-                  ],
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircleAvatar(
+                          child: Text('J'),
+                        ),
+                        const SizedBox(width: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              'John Doe',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text('john@example.com'),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ],
+            ),
+          )
+        ],
+      ),
     );
   }
-}
-
-Widget _buildStatsCard(String title, String value, IconData icon,
-    {String subtitle = ''}) {
-  return Expanded(
-    child: Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                if (subtitle.isNotEmpty)
-                  Text(
-                    subtitle,
-                    style: const TextStyle(color: Colors.green),
-                  ),
-              ],
-            ),
-            Icon(icon, size: 48, color: Colors.deepPurple),
-          ],
-        ),
-      ),
-    ),
-  );
 }

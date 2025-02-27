@@ -62,7 +62,7 @@ class _CustomDrawerState extends State<CustomDrawer>
           Buildnavitem(
             isActive: widget.tabController.index == 2,
             icon: Icons.lightbulb_outline,
-            title: 'Content Moderation',
+            title: 'Ideas',
             ontap: () {
               widget.tabController.animateTo(2);
             },
@@ -70,7 +70,7 @@ class _CustomDrawerState extends State<CustomDrawer>
           Buildnavitem(
             isActive: widget.tabController.index == 3,
             icon: Icons.analytics,
-            title: 'Analytics',
+            title: 'Pending Ideas',
             ontap: () {
               widget.tabController.animateTo(3);
             },

@@ -4,17 +4,24 @@ class Buildoverview extends StatelessWidget {
   final String title;
   final IconData icon;
   final String value;
-  final String subtitle;
-  const Buildoverview(
-      {super.key,
-      required this.title,
-      required this.icon,
-      required this.value,
-      required this.subtitle});
+
+  const Buildoverview({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.only(right: 20),
+      elevation: 4,
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(color: Colors.grey, width: 0.5),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
@@ -35,12 +42,10 @@ class Buildoverview extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                if (subtitle.isNotEmpty)
-                  Text(
-                    subtitle,
-                    style: const TextStyle(color: Colors.green),
-                  ),
               ],
+            ),
+            SizedBox(
+              width: 20,
             ),
             Icon(icon, size: 48, color: Colors.deepPurple),
           ],

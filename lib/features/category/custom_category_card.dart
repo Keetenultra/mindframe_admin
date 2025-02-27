@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/theme/app_theme.dart';
 
 class CustomCategoryCard extends StatelessWidget {
   final String coverImageUrl;
@@ -16,8 +17,8 @@ class CustomCategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.black,
-      shadowColor: Colors.black,
+      color: Colors.white,
+      shadowColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -43,7 +44,7 @@ class CustomCategoryCard extends StatelessWidget {
             Text(
               name,
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
             ),
             const SizedBox(height: 12),
@@ -76,19 +77,26 @@ class CustomCategoryCard extends StatelessWidget {
 class FeatureCard extends StatelessWidget {
   final IconData icon;
   final String text;
-  final Function() ontap;
-  const FeatureCard(
-      {super.key, required this.icon, required this.text, required this.ontap});
+  final Function()? ontap;
+  final Color color, backgroundColor, borderColor;
+
+  const FeatureCard({
+    super.key,
+    required this.icon,
+    required this.text,
+    this.ontap,
+    this.color = Colors.black87,
+    this.backgroundColor = Colors.white,
+    this.borderColor = outlineColor,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.black,
+      color: backgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: BorderSide(
-          color: Colors.grey.shade300,
-        ),
+        side: BorderSide(color: borderColor),
       ),
       child: InkWell(
         onTap: ontap,
@@ -101,13 +109,13 @@ class FeatureCard extends StatelessWidget {
               Icon(
                 icon,
                 size: 20,
-                color: Colors.white70,
+                color: color,
               ),
               SizedBox(width: 4),
               Text(
                 text,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.white70,
+                      color: color,
                       fontWeight: FontWeight.w500,
                     ),
               ),
