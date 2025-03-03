@@ -1,84 +1,147 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/common_widget/custom_search.dart';
+import 'package:data_table_2/data_table_2.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/web.dart';
+import '../../common_widget/custom_alert_dialog.dart';
+import 'users_bloc/users_bloc.dart';
 
-class UserManagementSection extends StatelessWidget {
-  const UserManagementSection({
-    super.key,
-  });
+class UserManagementSection extends StatefulWidget {
+  const UserManagementSection({super.key});
+
+  @override
+  State<UserManagementSection> createState() => _UserManagementSectionState();
+}
+
+class _UserManagementSectionState extends State<UserManagementSection> {
+  final UsersBloc _usersBloc = UsersBloc();
+
+  Map<String, dynamic> params = {
+    'query': null,
+  };
+
+  List<Map> _users = [];
+
+  @override
+  void initState() {
+    getUsers();
+    super.initState();
+  }
+
+  void getUsers() {
+    _usersBloc.add(GetAllUsersEvent(params: params));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: const Text(
-                  'User Management',
-                  style: TextStyle(
-                      fontSize: 24,
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontWeight: FontWeight.bold),
-                ),
+    return BlocProvider.value(
+      value: _usersBloc,
+      child: BlocConsumer<UsersBloc, UsersState>(
+        listener: (context, state) {
+          if (state is UsersFailureState) {
+            showDialog(
+              context: context,
+              builder: (context) => CustomAlertDialog(
+                title: 'Failure',
+                description: state.message,
+                primaryButton: 'Try Again',
+                onPrimaryPressed: () {
+                  getUsers();
+                  Navigator.pop(context);
+                },
               ),
-              SizedBox(
-                width: 300,
-                child: CustomSearch(onSearch: (search) {}),
-              )
-            ],
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Wrap(
-                spacing: 16,
-                runSpacing: 16,
-                children: List.generate(
-                  10,
-                  (index) => Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(0, 3),
+            );
+          } else if (state is UsersGetSuccessState) {
+            _users = state.users;
+            Logger().w(_users);
+            setState(() {});
+          } else if (state is UsersSuccessState) {
+            getUsers();
+          }
+        },
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        'User Management',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
+                      ),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CircleAvatar(
-                          child: Text('J'),
-                        ),
-                        const SizedBox(width: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              'John Doe',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
+                    SizedBox(
+                      width: 300,
+                      child: CustomSearch(
+                        onSearch: (query) {
+                          params['query'] = query;
+                          getUsers();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                if (state is UsersLoadingState) LinearProgressIndicator(),
+                if (state is UsersGetSuccessState && _users.isEmpty)
+                  Center(
+                    child: Text("No Users found!"),
+                  ),
+                if (state is UsersGetSuccessState && _users.isNotEmpty)
+                  Expanded(
+                    child: DataTable2(
+                      dataRowHeight: 80,
+                      columns: const [
+                        DataColumn2(label: Text('ID'), size: ColumnSize.S),
+                        DataColumn2(label: Text('Avatar'), size: ColumnSize.S),
+                        DataColumn2(label: Text('Name'), size: ColumnSize.L),
+                        DataColumn2(label: Text('Email'), size: ColumnSize.L),
+                        DataColumn2(label: Text('Phone'), size: ColumnSize.L),
+                      ],
+                      rows: List<DataRow>.generate(
+                        _users.length,
+                        (index) => DataRow(
+                          cells: [
+                            DataCell(Text('${_users[index]['id']}')),
+                            DataCell(
+                              _users[index]['photo'] != null
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: Image.network(
+                                          _users[index]['photo'],
+                                          fit: BoxFit.cover,
+                                          width: 60,
+                                          height: 60,
+                                        ),
+                                      ),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 30,
+                                      child: Icon(Icons.person),
+                                    ),
                             ),
-                            Text('john@example.com'),
+                            DataCell(Text(_users[index]['name'])),
+                            DataCell(Text(_users[index]['email'])),
+                            DataCell(Text(_users[index]['phone'] ?? 'N/A')),
                           ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
+              ],
             ),
-          )
-        ],
+          );
+        },
       ),
     );
   }
