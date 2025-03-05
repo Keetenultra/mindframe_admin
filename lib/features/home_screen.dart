@@ -41,7 +41,7 @@ class _AdminDashboardState extends State<AdminDashboard>
                 IdeaManagements(),
                 IdeaManagements(
                   title: 'Pending Idea',
-                  status: 'Pending',
+                  status: 'pending',
                 ),
                 CategoryScreen(),
               ],

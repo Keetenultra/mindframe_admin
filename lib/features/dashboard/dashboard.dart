@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/idea/idea_managements.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../common_widget/custom_search.dart';
 import '../buildoverview.dart';
@@ -25,14 +26,34 @@ class DashBoardSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Buildoverview(
-                title: 'Active Users',
-                icon: Icons.person,
-                value: '1234',
-              ),
+              FutureBuilder(
+                  future: Supabase.instance.client
+                      .from('user_profiles')
+                      .select()
+                      .count(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Buildoverview(
+                        title: 'Active Users',
+                        icon: Icons.person,
+                        value: 'Loading...',
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Buildoverview(
+                        title: 'Active Users',
+                        icon: Icons.person,
+                        value: 'Error',
+                      );
+                    }
+                    return Buildoverview(
+                        title: 'Active Users',
+                        icon: Icons.person,
+                        value: snapshot.data?.count.toString() ?? '0');
+                  }),
               Buildoverview(
                 title: 'Pending Ideas',
                 icon: Icons.lightbulb_outline,
@@ -53,38 +74,38 @@ class DashBoardSection extends StatelessWidget {
           const SizedBox(height: 24),
           // Recent Users section
 
-          Row(
-            children: [
-              Expanded(
-                child: const Text(
-                  'Pending Idea',
-                  style: TextStyle(
-                      fontSize: 24,
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              SizedBox(
-                width: 300,
-                child: CustomSearch(onSearch: (search) {}),
-              )
-            ],
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Wrap(
-                spacing: 16,
-                runSpacing: 16,
-                children: List.generate(
-                  10,
-                  (index) => CustomIdeaCard(
-                    status: "Pending",
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: const Text(
+          //         'Pending Idea',
+          //         style: TextStyle(
+          //             fontSize: 24,
+          //             color: Color.fromARGB(255, 0, 0, 0),
+          //             fontWeight: FontWeight.bold),
+          //       ),
+          //     ),
+          //     SizedBox(
+          //       width: 300,
+          //       child: CustomSearch(onSearch: (search) {}),
+          //     )
+          //   ],
+          // ),
+          // const SizedBox(height: 16),
+          // Expanded(
+          //   child: SingleChildScrollView(
+          //     child: Wrap(
+          //       spacing: 16,
+          //       runSpacing: 16,
+          //       children: List.generate(
+          //         10,
+          //         (index) => CustomIdeaCard(
+          //           status: "Pending",
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
