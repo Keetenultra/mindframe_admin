@@ -54,21 +54,55 @@ class DashBoardSection extends StatelessWidget {
                         icon: Icons.person,
                         value: snapshot.data?.count.toString() ?? '0');
                   }),
-              Buildoverview(
-                title: 'Pending Ideas',
-                icon: Icons.lightbulb_outline,
-                value: '56',
-              ),
-              Buildoverview(
-                title: 'Total Ideas',
-                icon: Icons.trending_up,
-                value: '789',
-              ),
-              Buildoverview(
-                title: 'Open Disputes',
-                icon: Icons.warning,
-                value: '12',
-              ),
+              FutureBuilder(
+                  future: Supabase.instance.client
+                      .from('ideas')
+                      .select()
+                      .eq('status', 'pending')
+                      .count(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Buildoverview(
+                        title: 'Pending Ideas',
+                        icon: Icons.lightbulb_outline,
+                        value: 'Loading...',
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Buildoverview(
+                        title: 'Pending Ideas',
+                        icon: Icons.lightbulb_outline,
+                        value: 'Error',
+                      );
+                    }
+                    return Buildoverview(
+                        title: 'Pending Ideas',
+                        icon: Icons.lightbulb_outline,
+                        value: snapshot.data?.count.toString() ?? '0');
+                  }),
+              FutureBuilder(
+                  future:
+                      Supabase.instance.client.from('ideas').select().count(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Buildoverview(
+                        title: 'Total Ideas',
+                        icon: Icons.trending_up,
+                        value: 'Loading...',
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Buildoverview(
+                        title: 'Total Ideas',
+                        icon: Icons.trending_up,
+                        value: 'Error',
+                      );
+                    }
+                    return Buildoverview(
+                        title: 'Total Ideas',
+                        icon: Icons.trending_up,
+                        value: snapshot.data?.count.toString() ?? '0');
+                  }),
             ],
           ),
           const SizedBox(height: 24),

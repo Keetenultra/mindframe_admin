@@ -3,11 +3,16 @@ import 'package:flutter_application_1/common_widget/custom_button.dart';
 import 'package:flutter_application_1/features/category/custom_category_card.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class IdeaManagements extends StatelessWidget {
+class IdeaManagements extends StatefulWidget {
   final String? title;
   final String status;
   const IdeaManagements({super.key, this.status = 'approved', this.title});
 
+  @override
+  State<IdeaManagements> createState() => _IdeaManagementsState();
+}
+
+class _IdeaManagementsState extends State<IdeaManagements> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -19,7 +24,7 @@ class IdeaManagements extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  title ?? 'Idea Management',
+                  widget.title ?? 'Idea Management',
                   style: const TextStyle(
                       fontSize: 24,
                       color: Color.fromARGB(255, 0, 0, 0),
@@ -40,7 +45,7 @@ class IdeaManagements extends StatelessWidget {
                       .from('ideas')
                       .select(
                           '*, category:categories(*), added_by:user_profiles(*)')
-                      .eq('status', status)
+                      .eq('status', widget.status)
                       .order('created_at', ascending: false),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -65,6 +70,7 @@ class IdeaManagements extends StatelessWidget {
                                 .from('ideas')
                                 .update({'status': 'approved'}).eq(
                                     'id', snapshot.data![index]['id']);
+                            setState(() {});
                           },
                         ),
                       ),
